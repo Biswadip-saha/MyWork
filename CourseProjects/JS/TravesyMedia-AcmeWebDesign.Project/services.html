@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="description" content="Affordable and professional web design">
+  <meta name="keywords" content="web design, affordable web design, professional web design">
+  <meta name="author" content="Brad Traversy">
+  <title>Acme Web Deisgn | Services</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div id="branding">
+        <h1><span class="highlight">Acme</span> Web Design</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li class="current"><a href="services.html">Services</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section id="newsletter">
+    <div class="container">
+      <h1>Subscribe To Our Newsletter</h1>
+      <form id="subscribeform">
+        <input type="email" placeholder="Enter Email..." name="from_email" id="from_email">
+        <input type="submit" id="subscribebutton" value="Subscribe" class="button_1">
+      </form>
+    </div>
+  </section>
+
+  <section id="main">
+    <div class="container">
+      <article id="main-col">
+        <h1 class="page-title">Services</h1>
+        <ul id="services">
+          <li>
+            <h3>Website Design</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mi augue, viverra sit amet ultricies at,
+              vulputate id lorem. Nulla facilisi.</p>
+            <p>Pricing: $1,000 - $3,000</p>
+          </li>
+          <li>
+            <h3>Website Maintenance</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mi augue, viverra sit amet ultricies at,
+              vulputate id lorem. Nulla facilisi.</p>
+            <p>Pricing: $250 per month</p>
+          </li>
+          <li>
+            <h3>Website Hosting</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus mi augue, viverra sit amet ultricies at,
+              vulputate id lorem. Nulla facilisi.</p>
+            <p>Pricing: $25 per month</p>
+          </li>
+        </ul>
+      </article>
+
+      <aside id="sidebar">
+        <div class="dark">
+          <h3>Get A Quote</h3>
+          <form class="quote" id="contactform">
+            <div>
+              <label for="from_name">Your Name :</label><br>
+              <input type="text" placeholder="Name" name="from_name" id="from_name">
+            </div>
+            <div>
+              <label for="from_email">Your Email :</label><br>
+              <input type="email" placeholder="Emial Address" name="from_email" id="from_email">
+            </div>
+            <div>
+              <label for="message">Your Message :</label><br>
+              <textarea placeholder="Message" name="message" id="message"></textarea>
+            </div>
+            <div>
+              <input type="submit" id="sendbutton" value="Send Email" class="button_1">
+            </div>
+          </form>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <footer>
+    <p>Acme Web Deisgn, Copyright &copy; 2017</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
+  <script type="text/javascript">
+    emailjs.init('user_15VvCsstQPxGBPL0fUZtr')
+  </script>
+
+  <script>
+    const btn = document.getElementById('sendbutton');
+
+    document.getElementById('contactform')
+      .addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        btn.value = 'Sending...';
+
+        const serviceID = 'default_service';
+        const templateID = 'template_q8sfj2d';
+
+        emailjs.sendForm(serviceID, templateID, this)
+          .then(() => {
+            btn.value = 'Send Email';
+            alert('Sent!');
+          }, (err) => {
+            btn.value = 'Send Email';
+            alert(JSON.stringify(err));
+          });
+      });
+  </script>
+
+  <script>
+    const btn2 = document.getElementById('subscribebutton');
+
+    document.getElementById('subscribeform')
+      .addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        btn2.value = 'Subscribing....';
+
+        const serviceID = 'default_service';
+        const templateID = 'template_6obeccp';
+
+        emailjs.sendForm(serviceID, templateID, this)
+          .then(() => {
+            btn2.value = 'Subscribe';
+            alert('Subscribed!');
+          }, (err) => {
+            btn2.value = 'Subscribe';
+            alert(JSON.stringify(err));
+          });
+      });
+
+  </script>
+
+</body>
+
+</html>

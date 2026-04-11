@@ -1,0 +1,18 @@
+.container {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-radius: 0 0 0 0;
+}
+.hero img{
+  border-radius: 0 0 0 0;
+}
+aside.right, aside.left{
+    text-align: center;
+    float: none;
+}
+@media only screen and (max-width: 400px){
+  section.intro, section.contact{
+    padding: 20px;
+  }
+}

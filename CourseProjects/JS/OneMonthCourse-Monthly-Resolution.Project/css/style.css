@@ -1,0 +1,134 @@
+/* Box Model Hack */
+* {
+     -moz-box-sizing: border-box;
+     -webkit-box-sizing: border-box;
+     box-sizing: border-box;
+}
+
+.clear {
+	clear: both;
+}
+
+body {
+	background: url('../images/notebook.png');
+	color: #000000;
+	font-family: 'Lato', sans-serif;
+	line-height: 1.7;
+	font-size: 100%;
+}
+
+h1 {
+	letter-spacing: -5px;
+	font-size: 55px;
+	margin-bottom: 10px;
+}
+
+h2 {
+	font-size: 32px;
+	margin: 0;
+}
+
+blockquote {
+	border-left: 5px #BBB solid;
+	padding-left: 10px;
+	margin-left: 0;
+	font-style: italic;
+}
+
+a {
+	color: #ff3300;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+
+
+/*----------------------------------------------------------------------------- 
+02=LAYOUT  
+-----------------------------------------------------------------------------*/
+
+div.container {
+	margin: 0 auto 0 auto;
+	/* width: 950px; */
+	display: flex;
+	flex-direction: row;
+}
+
+.main {
+	width: 900px;
+	float: left;
+	background: #FFF;
+	padding: 25px;
+	margin-right: 10px;
+	font-size: 12px;
+}
+
+.sidebar {
+	width: 400px;
+	/* float: left; */
+	background: #FFF;
+	padding: 25px;
+	border-left: 3px solid #BBB;
+	border-bottom: 3px solid #BBB;
+}
+	.sidebar img {
+		border-radius: 300px;
+	}
+
+/*----------------------------------------------------------------------------- 
+03=MAIN  
+-----------------------------------------------------------------------------*/
+
+.tagline {
+	margin-top: -30px;
+	margin-bottom: 30px;
+}
+
+.post {
+	margin-bottom: 50px;
+}
+
+.post-meta {
+color: #999;
+padding: 10px 0px;
+border-top: #BBB solid 1px;
+}
+
+.widget {
+	margin-bottom: 45px;
+}
+
+@media only screen and (max-width: 830px){
+	div.container{
+		flex-direction: column;
+	}
+
+	.main{
+		width: 100%;
+	}
+
+	.sidebar{
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		border: unset;
+	}
+}
+@media only screen and (max-width: 620px){
+	div.container div.main div.post img{
+		width: 450px;
+	}
+}
+@media only screen and (max-width: 510px){
+	div.container div.main div.post img{
+		width: 350px;
+	}
+}
+@media only screen and (max-width: 410px){
+	.main{
+		padding: 5px;
+	}
+	div.container div.main div.post img{
+		width: 250px;
+	}
+}

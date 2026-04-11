@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Weather App</title>
+		<link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+		<link rel="stylesheet" href="style.css" />
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+	</head>
+
+	<body>
+		<div class="hero bg-base-300 min-h-screen">
+			<div class="hero-content text-center flex-col">
+				<!-- Search Button -->
+				<div class="flex gap-[0.5rem]">
+					<label class="input w-[263px]">
+						<svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+							<g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
+								<circle cx="11" cy="11" r="8"></circle>
+								<path d="m21 21-4.3-4.3"></path>
+							</g>
+						</svg>
+						<input type="search" placeholder="Enter A City" class="grow" id="inputElem" autocomplete="off"/>
+					</label>
+					<div>
+						<button class="btn btn-primary" id="goBtn">Go</button>
+					</div>
+				</div>
+
+				<!-- EyeLoader Icon -->
+				<div class="eye-loader flex justify-center items-center" id="eyeLoaderIcon">
+					<span class="loader"></span>
+				</div>
+
+				<!-- Body -->
+				<div class="max-w-[2222px] card md:card-side bg-base-100 shadow-sm p-8" id="cardBody">
+					<div class="card-body">
+						<!-- Rainy Icon -->
+						<div class="rainy gap-4 relative flex justify-center py-14" id="rainyIcon">
+							<svg viewBox="0 0 64 64" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="w-20 scale-[300%]">
+								<defs>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="28.33" y1="19.67" x2="21.5" x1="16.5" id="rainyIconb">
+										<stop stop-color="#fbbf24" offset="0"></stop>
+										<stop stop-color="#fbbf24" offset=".45"></stop>
+										<stop stop-color="#f59e0b" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="50.8" y1="21.96" x2="39.2" x1="22.56" id="rainyIconc">
+										<stop stop-color="#f3f7fe" offset="0"></stop>
+										<stop stop-color="#f3f7fe" offset=".45"></stop>
+										<stop stop-color="#deeafb" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="48.05" y1="42.95" x2="25.47" x1="22.53" id="rainyIcona">
+										<stop stop-color="#4286ee" offset="0"></stop>
+										<stop stop-color="#4286ee" offset=".45"></stop>
+										<stop stop-color="#0950bc" offset="1"></stop>
+									</linearGradient>
+									<linearGradient xlink:href="#rainyIcona" y2="48.05" y1="42.95" x2="32.47" x1="29.53" id="rainyIcond"></linearGradient>
+									<linearGradient xlink:href="#rainyIcona" y2="48.05" y1="42.95" x2="39.47" x1="36.53" id="rainyIcone"></linearGradient>
+								</defs>
+								<path
+									d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"
+									stroke-width=".5"
+									stroke-miterlimit="10"
+									stroke="#e6effc"
+									fill="url(#rainyIconc)"
+								></path>
+								<path d="M24.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#rainyIcona)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" attributeName="transform"></animateTransform>
+								</path>
+								<path d="M31.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#rainyIcond)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.4s" attributeName="transform"></animateTransform>
+								</path>
+								<path d="M38.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#rainyIcone)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.2s" attributeName="transform"></animateTransform>
+								</path>
+							</svg>
+						</div>
+
+						<!-- Sunny Icon -->
+						<div class="sunny flex justify-center items-center" id="sunnyIcon">
+							<div class="sun sunshine absolute"></div>
+							<div class="sun"></div>
+						</div>
+
+						<!-- Thunderstorm Icon -->
+						<div class="thunderStorm gap-4 relative flex justify-center py-14" id="thunderStormIcon">
+							<div class="absolute w-[40px] top-1/2 left-1/2">
+								<div
+									class="border-t-yellow-300 border-t-[75px] border-l-yellow-300 border-l-[5px] border-r-yellow-300 border-r-[10px] w-4 skew-[-25deg] scale-[0.8] after:content-[''] after:absolute after:left-[10px] after:top-[-21px] after:border-t-yellow-300 after:border-t-[75px] after:border-r-transparent after:border-r-[27px] animate-pulse"
+								></div>
+							</div>
+							<svg viewBox="0 0 64 64" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="w-20 scale-[300%]">
+								<defs>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="28.33" y1="19.67" x2="21.5" x1="16.5" id="thunderStormIconb">
+										<stop stop-color="#fbbf24" offset="0"></stop>
+										<stop stop-color="#fbbf24" offset=".45"></stop>
+										<stop stop-color="#f59e0b" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="50.8" y1="21.96" x2="39.2" x1="22.56" id="thunderStormIconc">
+										<stop stop-color="#f3f7fe" offset="0"></stop>
+										<stop stop-color="#f3f7fe" offset=".45"></stop>
+										<stop stop-color="#deeafb" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="48.05" y1="42.95" x2="25.47" x1="22.53" id="thunderStormIcona">
+										<stop stop-color="#4286ee" offset="0"></stop>
+										<stop stop-color="#4286ee" offset=".45"></stop>
+										<stop stop-color="#0950bc" offset="1"></stop>
+									</linearGradient>
+									<linearGradient xlink:href="#thunderStormIcona" y2="48.05" y1="42.95" x2="32.47" x1="29.53" id="thunderStormIcond"></linearGradient>
+									<linearGradient xlink:href="#thunderStormIcona" y2="48.05" y1="42.95" x2="39.47" x1="36.53" id="thunderStormIcone"></linearGradient>
+								</defs>
+								<path
+									d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"
+									stroke-width=".5"
+									stroke-miterlimit="10"
+									stroke="#e6effc"
+									fill="url(#thunderStormIconc)"
+								></path>
+								<path d="M24.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#thunderStormIcona)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" attributeName="transform"></animateTransform>
+								</path>
+								<path d="M31.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#thunderStormIcond)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.4s" attributeName="transform"></animateTransform>
+								</path>
+								<path d="M38.39 43.03l-.78 4.94" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke="url(#thunderStormIcone)" fill="none">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.2s" attributeName="transform"></animateTransform>
+								</path>
+							</svg>
+						</div>
+
+						<!-- Cloudy Icon -->
+						<div class="cloudy flex justify-center items-center" id="cloudyIcon">
+							<div class="front">
+								<span class="left-front"></span>
+								<span class="right-front"></span>
+							</div>
+							<span class="sun sunshine absolute"></span>
+							<span class="sun"></span>
+							<div class="cloud back">
+								<span class="left-back"></span>
+								<span class="right-back"></span>
+							</div>
+						</div>
+
+						<!-- Snow Icon -->
+						<div class="snow gap-4 relative flex justify-center py-14" id="snowIcon">
+							<svg viewBox="0 0 64 64" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" class="w-20 scale-[300%]">
+								<defs>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="28.33" y1="19.67" x2="21.5" x1="16.5" id="snowIconb">
+										<stop stop-color="#fbbf24" offset="0"></stop>
+										<stop stop-color="#fbbf24" offset=".45"></stop>
+										<stop stop-color="#f59e0b" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="50.8" y1="21.96" x2="39.2" x1="22.56" id="snowIconc">
+										<stop stop-color="#f3f7fe" offset="0"></stop>
+										<stop stop-color="#f3f7fe" offset=".45"></stop>
+										<stop stop-color="#deeafb" offset="1"></stop>
+									</linearGradient>
+									<linearGradient gradientUnits="userSpaceOnUse" y2="48.05" y1="42.95" x2="25.47" x1="22.53" id="snowIcona">
+										<stop stop-color="#4286ee" offset="0"></stop>
+										<stop stop-color="#4286ee" offset=".45"></stop>
+										<stop stop-color="#0950bc" offset="1"></stop>
+									</linearGradient>
+									<linearGradient xlink:href="#snowIcona" y2="48.05" y1="42.95" x2="32.47" x1="29.53" id="snowIcond"></linearGradient>
+									<linearGradient xlink:href="#snowIcona" y2="48.05" y1="42.95" x2="39.47" x1="36.53" id="snowIcone"></linearGradient>
+								</defs>
+								<path
+									d="M46.5 31.5h-.32a10.49 10.49 0 00-19.11-8 7 7 0 00-10.57 6 7.21 7.21 0 00.1 1.14A7.5 7.5 0 0018 45.5a4.19 4.19 0 00.5 0v0h28a7 7 0 000-14z"
+									stroke-width=".5"
+									stroke-miterlimit="10"
+									stroke="#e6effc"
+									fill="url(#snowIconc)"
+								></path>
+								<circle class="animate-pulse" cx="25" cy="50" r="1" fill="#EBEFFE">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.4s" attributeName="transform"></animateTransform>
+								</circle>
+								<circle class="animate-pulse" cx="30" cy="50" r="1" fill="#EBEFFE">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" attributeName="transform"></animateTransform>
+								</circle>
+								<circle class="animate-pulse" cx="35" cy="50" r="1" fill="#EBEFFE">
+									<animateTransform values="1 -5; -2 10" type="translate" repeatCount="indefinite" dur="0.7s" begin="-0.2s" attributeName="transform"></animateTransform>
+								</circle>
+							</svg>
+						</div>
+
+						<!-- Place -->
+						<div class="place">
+							<div class="stat not-last:border-e-0">
+								<div class="stat-title" id="cityName"></div>
+								<div class="stat-value" id="temp"></div>
+							</div>
+						</div>
+					</div>
+
+					<!-- Stats -->
+					<div class="card-body justify-evenly grid gird-cols-1 md:grid-cols-[auto_1fr] lg:grid-cols-[auto_1fr_1fr] gap-4">
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Description</div>
+							<div class="stat-value" id="description"></div>
+						</div>
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Feels Like</div>
+							<div class="stat-value" id="feelsLike"></div>
+						</div>
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Humidity</div>
+							<div class="stat-value" id="humidity"></div>
+						</div>
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Wind Speed</div>
+							<div class="stat-value" id="windSpeed"></div>
+						</div>
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Visibility</div>
+							<div class="stat-value" id="visibility"></div>
+						</div>
+						<div class="stat not-last:border-e-0 md:odd:border-e-1 lg:odd:border-e-0 lg:nth-of-type-[3n+1]:border-e-1 lg:nth-of-type-[3n+2]:border-e-1">
+							<div class="stat-title">Aqi</div>
+							<div class="stat-value" id="aqi"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="script.js"></script>
+</html>

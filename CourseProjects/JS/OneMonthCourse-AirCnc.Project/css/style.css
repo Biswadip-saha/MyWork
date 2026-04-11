@@ -1,0 +1,294 @@
+/* general styles */
+
+* {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+}
+body {
+    font-family: 'Open Sans', arial, sans-serif;
+    font-size: 0.875rem;
+    color: rgb(86, 90, 92);
+    background: rgba(213, 201, 201, 0.22);
+}
+a {
+    font-weight: bold;
+    color: rgb(255, 89, 95);
+    text-decoration: none;
+}
+.button a {
+    color: white
+}
+
+/* button-style */
+
+.button {
+    background: rgb(255, 89, 95);
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 0.75rem 5rem;
+    border-bottom: 1px solid rgb(255, 25, 29);
+    border-radius: 2px;
+    width: 95%;
+    margin: 0 auto;
+}
+
+/* heading */
+
+h1 {
+    font-size: 22px;
+    color: #666A6C;
+}
+
+/* header styles */
+
+header .logo img {
+    border-right: 1px solid #DCE0E0;
+}
+.hero {
+    width: 100%;
+}
+.hero img {
+    width: 100%;
+}
+
+/* info */
+
+.info {
+    background: white;
+    text-align: center;
+    padding: 25px;
+}
+.info h1 {
+    margin-bottom: 5px;
+}
+.info .profile {
+    margin-bottom: 24px;
+}
+.info .owner-details img {
+    border-radius: 50%;
+    margin-bottom: 6px;
+}
+.info h2.relationship,
+.info h2.name {
+    color: #909597;
+    margin-bottom: 3px;
+}
+.info h2.name {
+    font-weight: bold;
+}
+.info p.location {
+    margin-bottom: 20px;
+}
+.info .icons {
+    float: left;
+    width: 33.3%;
+}
+.info .icon img {
+    height: 30px;
+    margin-bottom: 3px;
+}
+.clearfix:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+.info .booking h2 {
+    font-weight: bold;
+    font-size: 22px;
+    margin-bottom: 13px;
+}
+.info h2.price time {
+    font-size: 16px;
+}
+
+@media only screen and (min-width: 1060px) {
+    .container1 {
+        width: 1040px;
+        margin: 0 auto;
+    }
+    .column {
+        float: left;
+    }
+    .button {
+        width: 275px;
+        margin: auto;
+    }
+    .info h1 {
+        margin-bottom: 11px;
+    }
+    .info h2 {
+        margin-bottom: 3px;
+    }
+    .info .profile {
+        width: 660px;
+        border-right: 1px solid #DCE0E0;
+    }
+    .info .booking {
+        width: 380px;
+    }
+    .info .owner-details {
+        width: 20%;
+        font-family: 'Open Sans', arial, sans-serif;
+        font-size: 10px;
+    }
+    .info .pet-details {
+        width: 80%;
+        text-align: left;
+    }
+    .info .pet-details .icon {
+        width: inherit;
+        margin-right: 50px;
+    }
+    .info .pet-details .icon img {
+        display: block;
+        margin: 3px auto auto 3px;
+
+    }
+}
+
+/* about */
+.about {
+    padding: 1.5rem;
+    border-top: 1px solid #DCE0E0;
+    padding-top: 44px;
+    width: 97%;
+    text-align: center;
+}
+.container2 {
+    text-align: center;
+}
+.about h3 {
+    text-align: center;
+    padding-bottom: 27px;
+}
+.about p {
+    text-align: left;
+    line-height: 25px;
+
+}
+.about div {
+    margin-top: 13px;
+    margin-bottom: 15px;
+}
+
+@media only screen and (min-width: 1060px) {
+    .container2 {
+        text-align: left;
+    }
+    .about h3 {
+        text-align: center;
+        padding-bottom: 27px;
+        font-size: 25px;
+        color: #565A5C;
+    }
+    .about p {
+        font-size: 16px;
+        line-height: 22px;
+        color: #565A5C;
+    }
+    .about div {
+        Font-size: 18px;
+        color: #FF595F;
+    }
+    .container_1 {
+        margin-left: 10rem;
+        margin-right: 10rem;
+    }
+}
+
+/* care */
+
+.care {
+    padding: 1.5rem;
+    border-top: 1px solid #DCE0E0;
+    margin-right: 16px;
+    font-size: 16px;
+
+}
+.care h5 {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 30px;
+}
+.care time,.care .value {
+    font-weight: 600;
+    color: #666A6C;
+}
+
+@media only screen and (min-width : 1060px) {
+
+    .container3 {
+        text-align: left;
+        width: 95%;
+        ;
+    }
+    .care .detail {
+        float: left;
+    }
+    .care .head {
+        padding-top: 28px;
+        width: 10rem;
+        height: 130px;
+    }
+    .care .diet-toy {
+        padding-top: 28px;
+        width: 15rem;
+        height: 130px;
+    }
+    .care .checking-time {
+        padding-top: 28px;
+        width: 15rem;
+        height: 130px;
+    }
+}
+
+/* games */
+.container4 {
+    padding: 1.5rem;
+    padding-top: 16px;
+    line-height: 32px;
+    font-size: 16px;
+    border-top: 1px solid #DCE0E0;
+    border-bottom: 1px solid #DCE0E0;
+    text-align: left;
+}
+
+.games p {
+    font-size: 16px;
+    text-align: left;
+}
+
+@media only screen and (min-width: 1060px) {
+    .container4 {
+        width: 95%;
+    }
+    .game-content {
+        float: left;
+    }
+    .games .head {
+        width: 10rem;
+    }
+    .games .icons {
+        width: 15rem;
+    }
+}
+
+/* photos */
+
+.container5 {
+    width: 98%;
+    text-align: center;
+    line-height: 2rem;
+}
+.photos img {
+    height: 200px;
+    width: 300px;
+    margin: 3px;
+    padding-top: 5px;
+    max-width: 100%;
+    height: auto;
+}
