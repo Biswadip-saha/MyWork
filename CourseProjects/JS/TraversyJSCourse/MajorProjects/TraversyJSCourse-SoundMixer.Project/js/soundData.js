@@ -1,0 +1,100 @@
+// Sound Data Config
+
+export const sounds = [
+	{
+		id: "rain",
+		name: "Rain",
+		icon: "fa-cloud-rain",
+		color: "from-blue-500 to-cyan-500",
+		file: "rain.mp3",
+		description: "Gentle Rainfall",
+	},
+	{
+		id: "ocean",
+		name: "Ocean Waves",
+		icon: "fa-water",
+		color: "from-teal-500 to-blue-500",
+		file: "ocean.mp3",
+		description: "Calming Ocean Waves",
+	},
+	{
+		id: "forest",
+		name: "Forest",
+		icon: "fa-tree",
+		color: "from-green-500 to-emerald-500",
+		file: "birds.mp3",
+		description: "Birds and Winds in Forest",
+	},
+	{
+		id: "fireplace",
+		name: "Fireplace",
+		icon: "fa-fire",
+		color: "from-orange-500 to-red-500",
+		file: "fireplace.mp3",
+		description: "Crckling Fire",
+	},
+	{
+		id: "thunder",
+		name: "Thunder",
+		icon: "fa-bolt",
+		color: "from-purple-500 to-indigo-500",
+		file: "thunder.mp3",
+		description: "Distant Thunder",
+	},
+	{
+		id: "wind",
+		name: "Wind",
+		icon: "fa-wind",
+		color: "from-gray-400 to-grey-600",
+		file: "wind.mp3",
+		description: "Gentle Breeze",
+	},
+	{
+		id: "Cafe",
+		name: "Coffee Shop",
+		icon: "fa-mug-hot",
+		color: "from-amber-600 to-yellow-600",
+		file: "cafe.mp3",
+		description: "Ambient Cafe Sounds",
+	},
+	{
+		id: "night",
+		name: "Night",
+		icon: "fa-moon",
+		color: "from-indigo-600 to-purple-600",
+		file: "night.mp3",
+		description: "Crickets and Night Sounds",
+	},
+];
+
+// Default Preset Config
+
+export const defaultPresets = {
+	focus: {
+		name: "Focus",
+		icon: "fa-brain",
+		sounds: {
+			rain: 30,
+			cafe: 20,
+			wind: 10,
+		},
+	},
+	relax: {
+		name: "Relax",
+		icon: "fa-spa",
+		sounds: {
+			ocean: 40,
+			forest: 30,
+			wind: 20,
+		},
+	},
+	sleep: {
+		name: "Sleep",
+		icon: "fa-bed",
+		sounds: {
+			rain: 40,
+			night: 30,
+			wind: 15,
+		},
+	},
+};
