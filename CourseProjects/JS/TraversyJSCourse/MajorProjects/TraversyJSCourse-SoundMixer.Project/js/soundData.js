@@ -31,7 +31,7 @@ export const sounds = [
 		icon: "fa-fire",
 		color: "from-orange-500 to-red-500",
 		file: "fireplace.mp3",
-		description: "Crckling Fire",
+		description: "Crackling Fire",
 	},
 	{
 		id: "thunder",
