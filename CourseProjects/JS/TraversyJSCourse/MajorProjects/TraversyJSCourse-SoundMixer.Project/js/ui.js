@@ -62,7 +62,8 @@ export class UI {
                     <div class="volume-bar-fill" style="width: 0%"></div>
                 </div>
             </div>
-        </div>`;
+        </div>
+		`;
 
 		return card;
 	}
@@ -90,11 +91,40 @@ export class UI {
 				icon.classList.remove("fa-play");
 				icon.classList.add("fa-pause");
 				card.classList.add("playing");
-			}else{
-                icon.classList.remove("fa-pause");
+			} else {
+				icon.classList.remove("fa-pause");
 				icon.classList.add("fa-play");
 				card.classList.remove("playing");
-            }
+			}
+		}
+	}
+
+	// Update visual changes of volume slider
+
+	updateVolumeDisplay(soundId, volume) {
+		const card = document.querySelector(`[data-sound='${soundId}']`);
+
+		if (card) {
+			// Update number display
+
+			const volumeValue = card.querySelector(".volume-value");
+			if (volumeValue) {
+				volumeValue.textContent = volume;
+			}
+
+			// Update volume bar visuals
+
+			const volumeBarFill = card.querySelector(".volume-bar-fill");
+			if (volumeBarFill) {
+				volumeBarFill.style.width = `${volume}%`;
+			}
+
+			// Update slider position
+
+			const slider = card.querySelector(".volume-slider");
+			if (slider) {
+				slider.value = volume;
+			}
 		}
 	}
 }
