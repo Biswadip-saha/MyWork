@@ -73,9 +73,9 @@ export class SoundManager {
 
 	// Play all sounds
 
-	playAll(){
+	playAll() {
 		for (const [soundId, audio] of this.audioElements) {
-			if(audio.paused){
+			if (audio.paused) {
 				audio.play();
 			}
 		}
@@ -84,11 +84,23 @@ export class SoundManager {
 
 	// Pause all sounds
 
-	pauseAll(){
+	pauseAll() {
 		for (const [soundId, audio] of this.audioElements) {
-			if(!audio.paused){
+			if (!audio.paused) {
 				audio.pause();
 			}
+		}
+		this.isPlaying = false;
+	}
+
+	// Stop all sounds
+
+	stopAll() {
+		for (const [soundId, audio] of this.audioElements) {
+			if (!audio.paused) {
+				audio.pause();
+			}
+			audio.currentTime = 0;
 		}
 		this.isPlaying = false;
 	}

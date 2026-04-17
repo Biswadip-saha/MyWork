@@ -80,6 +80,14 @@ class AmbientMixer {
 				this.toggleAllSounds();
 			});
 		}
+
+		// Handle reset button
+
+		if (this.ui.resetButton) {
+			this.ui.resetButton.addEventListener("click", () => {
+				this.resetAll();
+			});
+		}
 	}
 
 	// Load all sound files
@@ -121,7 +129,8 @@ class AmbientMixer {
 
 			// If sound is off, turn it on
 
-			this.soundManager.setVolume(soundId, volume);
+			const effectiveVolume = (volume * this.masterVolume) / 100;
+			this.soundManager.setVolume(soundId, effectiveVolume);
 			await this.soundManager.playSound(soundId);
 			this.ui.updateSoundPlayButton(soundId, true);
 		} else {
@@ -255,6 +264,22 @@ class AmbientMixer {
 
 		this.soundManager.isPlaying = anySoundPlaying;
 		this.ui.updateMainPlayButton(anySoundPlaying);
+	}
+
+	// Reset all
+
+	resetAll() {
+		// Stop all sounds
+
+		this.soundManager.stopAll();
+
+		// Reset master volume
+
+		this.masterVolume = 100;
+
+		// Reset Ui
+
+		this.ui.resetUi();
 	}
 }
 
