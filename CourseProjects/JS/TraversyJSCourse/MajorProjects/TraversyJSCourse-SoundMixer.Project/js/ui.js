@@ -78,7 +78,7 @@ export class UI {
 		});
 	}
 
-	// Update play/pause button
+	// Update visual changes of play/pause button
 
 	updateSoundPlayButton(soundId, isPlaying) {
 		const card = document.querySelector(`[data-sound='${soundId}']`);
@@ -125,6 +125,20 @@ export class UI {
 			if (slider) {
 				slider.value = volume;
 			}
+		}
+	}
+
+	// Update visual changes of main play/pause button
+
+	updateMainPlayButton(isPlaying) {
+		const icon = this.playPauseButton.querySelector("i");
+
+		if (isPlaying) {
+			icon.classList.remove("fa-play");
+			icon.classList.add("fa-pause");
+		} else {
+			icon.classList.remove("fa-pause");
+			icon.classList.add("fa-play");
 		}
 	}
 }

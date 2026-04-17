@@ -72,6 +72,14 @@ class AmbientMixer {
 				this.setMasterVolume(volume);
 			});
 		}
+
+		// Handle master play/pause button
+
+		if (this.ui.playPauseButton) {
+			this.ui.playPauseButton.addEventListener("click", () => {
+				this.toggleAllSounds();
+			});
+		}
 	}
 
 	// Load all sound files
@@ -107,6 +115,7 @@ class AmbientMixer {
 
 			if (volume === 0) {
 				volume = 50;
+				slider.value = 50;
 				this.ui.updateVolumeDisplay(soundId, volume);
 			}
 
@@ -120,6 +129,50 @@ class AmbientMixer {
 
 			this.soundManager.pauseSound(soundId);
 			this.ui.updateSoundPlayButton(soundId, false);
+		}
+
+		// Ui changes of main play button
+
+		this.updateMainPlayButtonState();
+	}
+
+	// Toggle all sounds
+
+	toggleAllSounds() {
+		if (this.soundManager.isPlaying) {
+			// Toggle sounds to off, if on
+
+			this.soundManager.pauseAll();
+			this.ui.updateMainPlayButton(false);
+			sounds.forEach((sound) => {
+				this.ui.updateSoundPlayButton(sound.id, false);
+			});
+		} else {
+			// Toggle sounds to on, if off
+
+			for (const [soundId, audio] of this.soundManager.audioElements) {
+				const card = document.querySelector(`[data-sound='${soundId}']`);
+				const slider = card?.querySelector(".volume-slider");
+
+				if (slider) {
+					let volume = parseInt(slider.value);
+					if (volume === 0) {
+						volume = 50;
+						slider.value = 50;
+						this.ui.updateVolumeDisplay(soundId, volume);
+					}
+					this.currentSoundState[soundId] = volume;
+
+					const effectiveVolume = (volume * this.masterVolume) / 100;
+					audio.volume = effectiveVolume / 100;
+					this.ui.updateSoundPlayButton(soundId, true);
+				}
+			}
+
+			// Play all sounds
+
+			this.soundManager.playAll();
+			this.ui.updateMainPlayButton(true);
 		}
 	}
 
@@ -140,6 +193,10 @@ class AmbientMixer {
 		// Update visual changes of volume slider
 
 		this.ui.updateVolumeDisplay(soundId, volume);
+
+		// Sync sounds
+
+		this.updateMainPlayButtonState();
 	}
 
 	// Set master volume
@@ -179,6 +236,25 @@ class AmbientMixer {
 				}
 			}
 		}
+	}
+
+	// Update main play button based on individual sounds
+
+	updateMainPlayButtonState() {
+		// Check if any sound is playing
+
+		let anySoundPlaying = false;
+		for (const [soundId, audio] of this.soundManager.audioElements) {
+			if (!audio.paused) {
+				anySoundPlaying = true;
+				break;
+			}
+		}
+
+		// Update the main button and the internal state
+
+		this.soundManager.isPlaying = anySoundPlaying;
+		this.ui.updateMainPlayButton(anySoundPlaying);
 	}
 }
 
