@@ -1,5 +1,6 @@
 import { sounds, defaultPresets } from "./soundData.js";
 import { SoundManager } from "./soundManager.js";
+import { PresetManager } from "./presetManager.js";
 import { UI } from "./ui.js";
 
 class AmbientMixer {
@@ -8,7 +9,7 @@ class AmbientMixer {
 	constructor() {
 		this.soundManager = new SoundManager();
 		this.ui = new UI();
-		this.presetManager = null;
+		this.presetManager = new PresetManager();
 		this.timer = null;
 		this.currentSoundState = {};
 		this.masterVolume = 100;
@@ -33,6 +34,12 @@ class AmbientMixer {
 
 			this.loadAllSounds();
 
+			// Initialize sound states after loading sounds
+
+			sounds.forEach((sound) => {
+				this.currentSoundState[sound.id] = 0;
+			});
+
 			this.isInitialized = true;
 		} catch (error) {
 			console.log("Failed to initialized app: ", error);
@@ -50,6 +57,12 @@ class AmbientMixer {
 			if (e.target.closest(".play-btn")) {
 				const soundId = e.target.closest(".play-btn").dataset.sound;
 				await this.toggleSound(soundId);
+			}
+
+			// Check if a default preset button was clicked
+			if (e.target.closest(".preset-btn")) {
+				const presetKey = e.target.closest(".preset-btn").dataset.preset;
+				this.loadPreset(presetKey);
 			}
 		});
 
@@ -86,6 +99,46 @@ class AmbientMixer {
 		if (this.ui.resetButton) {
 			this.ui.resetButton.addEventListener("click", () => {
 				this.resetAll();
+			});
+		}
+
+		// Save preset button
+
+		const saveButton = document.getElementById("savePreset");
+
+		if (saveButton) {
+			saveButton.addEventListener("click", () => {
+				this.showSavePresetModal();
+			});
+		}
+
+		// Cancel save preset button
+
+		const cancelSaveButton = document.getElementById("cancelSave");
+
+		if (cancelSaveButton) {
+			cancelSaveButton.addEventListener("click", () => {
+				this.ui.hideModal();
+			});
+		}
+
+		// Close modal if backdrop is clicked
+
+		if (this.ui.modal) {
+			this.ui.modal.addEventListener("click", (e) => {
+				if (e.target === this.ui.modal) {
+					this.ui.hideModal();
+				}
+			});
+		}
+
+		// Confirm save preset button
+
+		const confirmSaveButton = document.getElementById("confirmSave");
+
+		if (confirmSaveButton) {
+			confirmSaveButton.addEventListener("click", () => {
+				this.saveCurrentPreset();
 			});
 		}
 	}
@@ -127,6 +180,10 @@ class AmbientMixer {
 				this.ui.updateVolumeDisplay(soundId, volume);
 			}
 
+			// Set current sound state
+
+			this.currentSoundState[soundId] = volume;
+
 			// If sound is off, turn it on
 
 			const effectiveVolume = (volume * this.masterVolume) / 100;
@@ -134,6 +191,10 @@ class AmbientMixer {
 			await this.soundManager.playSound(soundId);
 			this.ui.updateSoundPlayButton(soundId, true);
 		} else {
+			// Set current sound state
+
+			this.currentSoundState[soundId] = 0;
+
 			// If sound is on, turn it off
 
 			this.soundManager.pauseSound(soundId);
@@ -188,6 +249,10 @@ class AmbientMixer {
 	// Set sound volume
 
 	setSoundVolume(soundId, volume) {
+		// Set sound volume in state
+
+		this.currentSoundState[soundId] = volume;
+
 		// Calculate effective volume
 
 		const effectiveVolume = (volume * this.masterVolume) / 100;
@@ -277,9 +342,101 @@ class AmbientMixer {
 
 		this.masterVolume = 100;
 
+		// Reset current sound state
+
+		sounds.forEach((sound) => {
+			this.currentSoundState[sound.id] = 0;
+		});
+
 		// Reset Ui
 
 		this.ui.resetUi();
+	}
+
+	// Load preset config
+
+	loadPreset(presetKey) {
+		const preset = defaultPresets[presetKey];
+
+		if (!preset) {
+			console.error(`Preset: ${presetKey} not found`);
+			return;
+		}
+
+		// Stop all sounds
+
+		this.soundManager.stopAll();
+
+		// Reset all volumes to 0
+
+		sounds.forEach((sound) => {
+			this.currentSoundState[sound.id] = 0;
+			this.ui.updateVolumeDisplay(sound.id, 0);
+			this.ui.updateSoundPlayButton(sound.id, false);
+		});
+
+		// Apply the preset volumes
+
+		for (const [soundId, volume] of Object.entries(preset.sounds)) {
+			// Set volume state
+
+			this.currentSoundState[soundId] = volume;
+
+			// Update UI
+
+			this.ui.updateVolumeDisplay(soundId, volume);
+
+			// Calculate and assign effective volume
+
+			const effectiveVolume = (volume * this.masterVolume) / 100;
+			const audio = this.soundManager.audioElements.get(soundId);
+
+			if (audio) {
+				audio.volume = effectiveVolume / 100;
+				audio.play();
+				this.ui.updateSoundPlayButton(soundId, true);
+			}
+		}
+
+		// Update main play button and state
+
+		this.soundManager.isPlaying = true;
+		this.ui.updateMainPlayButton(true);
+	}
+
+	// Show save preset modal
+
+	showSavePresetModal() {
+		// Check if any sounds are active
+
+		const hasActiveSounds = Object.values(this.currentSoundState).some((v) => v > 0);
+
+		if (!hasActiveSounds) {
+			alert("No active sounds for preset");
+			return;
+		}
+
+		this.ui.showModal();
+	}
+
+	// Save current preset
+
+	saveCurrentPreset() {
+		const nameInput = document.getElementById("presetName");
+		const name = nameInput.value.trim();
+
+		if (!name) {
+			alert("Please enter a preset name");
+			return;
+		}
+
+		if (this.presetManager.presetNameExists(name)) {
+			alert(`A preset with the name ${name} already exists`);
+			return;
+		}
+
+		const presetId = this.presetManager.savePreset(name, this.currentSoundState);
+		this.ui.hideModal();
 	}
 }
 
