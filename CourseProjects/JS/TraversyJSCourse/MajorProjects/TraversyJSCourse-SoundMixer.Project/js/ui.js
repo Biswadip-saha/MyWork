@@ -251,10 +251,23 @@ export class UI {
 				const formattedTime = `${minutes.toString().padStart(2, "0")} : ${seconds.toString().padStart(2, "0")}`;
 				this.timerDisplay.textContent = formattedTime;
 				this.timerDisplay.classList.remove("hidden");
-			}
-			else{
+			} else {
 				this.timerDisplay.classList.add("hidden");
 			}
+		}
+	}
+
+	// Theme toggle
+
+	toggleTheme() {
+		const body = document.body;
+		const icon = this.themeToggle.querySelector("i");
+		if (body.classList.contains("light-theme")) {
+			body.classList.remove("light-theme");
+			icon.classList.replace("fa-moon", "fa-sun");
+		} else {
+			body.classList.add("light-theme");
+			icon.classList.replace("fa-sun", "fa-moon");
 		}
 	}
 }
