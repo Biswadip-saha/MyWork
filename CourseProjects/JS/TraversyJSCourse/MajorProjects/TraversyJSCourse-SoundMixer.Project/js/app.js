@@ -1,6 +1,7 @@
 import { sounds, defaultPresets } from "./soundData.js";
 import { SoundManager } from "./soundManager.js";
 import { PresetManager } from "./presetManager.js";
+import { Timer } from "./timer.js";
 import { UI } from "./ui.js";
 
 class AmbientMixer {
@@ -10,7 +11,10 @@ class AmbientMixer {
 		this.soundManager = new SoundManager();
 		this.ui = new UI();
 		this.presetManager = new PresetManager();
-		this.timer = null;
+		this.timer = new Timer(
+			() => this.onTimerComplete(),
+			(minutes, seconds) => this.ui.updateTimerDisplay(minutes, seconds),
+		);
 		this.currentSoundState = {};
 		this.masterVolume = 100;
 		this.isInitialized = false;
@@ -133,6 +137,16 @@ class AmbientMixer {
 			});
 		}
 
+		// Confirm save preset button
+
+		const confirmSaveButton = document.getElementById("confirmSave");
+
+		if (confirmSaveButton) {
+			confirmSaveButton.addEventListener("click", () => {
+				this.saveCurrentPreset();
+			});
+		}
+
 		// Cancel save preset button
 
 		const cancelSaveButton = document.getElementById("cancelSave");
@@ -153,13 +167,17 @@ class AmbientMixer {
 			});
 		}
 
-		// Confirm save preset button
+		// Timer select
 
-		const confirmSaveButton = document.getElementById("confirmSave");
-
-		if (confirmSaveButton) {
-			confirmSaveButton.addEventListener("click", () => {
-				this.saveCurrentPreset();
+		const timerSelect = document.getElementById("timerSelect");
+		if (timerSelect) {
+			timerSelect.addEventListener("change", (e) => {
+				const minutes = parseInt(e.target.value);
+				if (minutes > 0) {
+					this.timer.start(minutes);
+				} else {
+					this.timer.stop();
+				}
 			});
 		}
 	}
@@ -368,6 +386,13 @@ class AmbientMixer {
 
 		this.ui.setActivePreset(null);
 
+		// Reset timer
+
+		this.timer.stop();
+		if (this.ui.timerSelect) {
+			this.ui.timerSelect.value = "0";
+		}
+
 		// Reset current sound state
 
 		sounds.forEach((sound) => {
@@ -495,6 +520,33 @@ class AmbientMixer {
 	deleteCustomPreset(presetId) {
 		if (this.presetManager.deletePreset(presetId)) {
 			this.ui.removeCustomPreset(presetId);
+		}
+	}
+
+	// Timer complete callback
+
+	onTimerComplete() {
+		// Stop all sounds and update UI
+		this.soundManager.pauseAll();
+
+		this.ui.updateMainPlayButton(false);
+
+		sounds.forEach((sound) => {
+			this.ui.updateSoundPlayButton(sound.id, false);
+		});
+
+		// Reset timer dropdown
+
+		const timerSelect = document.getElementById("timerSelect");
+		if (timerSelect) {
+			timerSelect.value = "0";
+		}
+
+		// Clear and hide timer display
+
+		if (this.ui.timerDisplay) {
+			this.ui.timerDisplay.textContent = "";
+			this.ui.timerDisplay.classList.add("hidden");
 		}
 	}
 }
