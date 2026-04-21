@@ -72,8 +72,16 @@ export class UI {
 
 	createCustomPresetButton(name, presetId) {
 		const button = document.createElement("button");
-		button.className = "custom-preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 realtive group";
-
+		button.className = "custom-preset-btn bg-white/10 hover:bg-white/20 px-4 py-2 rounded-lg transition-all duration-300 relative group";
+		button.dataset.preset = presetId;
+		button.innerHTML = `
+		<i class="fas fa-star mr-2 text-yellow-400"></i>
+    	${name}
+    	<button type="button" class="delete-preset absolute-top-2-right-2 w-6 h-6 bg-red-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" data-preset="${presetId}">
+      		<i class="fas fa-times text-xs text-white"></i>
+    	</button>
+		`;
+		return button;
 	}
 
 	// Render all sound cards
@@ -200,5 +208,38 @@ export class UI {
 		this.modal.classList.remove("flex");
 		this.modal.classList.add("hidden");
 		document.getElementById("presetName").value = "";
+	}
+
+	// Add custom preset to UI
+
+	addCustomPreset(name, presetId) {
+		const button = this.createCustomPresetButton(name, presetId);
+		this.customPresetsContainer.appendChild(button);
+	}
+
+	// Highlight active preset
+
+	setActivePreset(presetId) {
+		// Remove active class from all buttons
+
+		document.querySelectorAll(".preset-btn, .custom-preset-btn").forEach((btn) => {
+			btn.classList.remove("preset-active");
+		});
+
+		// Add active class to selected presets
+
+		const activeButton = document.querySelector(`.preset-btn[data-preset="${presetId}"], .custom-preset-btn[data-preset="${presetId}"]`);
+		if (activeButton) {
+			activeButton.classList.add("preset-active");
+		}
+	}
+
+	// Remove custom preset from UI
+
+	removeCustomPreset(presetId) {
+		const button = document.querySelector(`.custom-preset-btn[data-preset="${presetId}"]`);
+		if (button) {
+			button.remove();
+		}
 	}
 }

@@ -10,6 +10,12 @@ export class PresetManager {
 		return stored ? JSON.parse(stored) : {};
 	}
 
+	// Load custom preset by id
+
+	loadPreset(presetId) {
+		return this.customPresets[presetId] || null;
+	}
+
 	// Save custom presets to localStorage
 
 	saveCustomPresets() {
@@ -45,5 +51,16 @@ export class PresetManager {
 
 	presetNameExists(name) {
 		return Object.values(this.customPresets).some((preset) => preset.name === name);
+	}
+
+	// Delete a custom preset
+
+	deletePreset(presetId) {
+		if (this.customPresets) {
+			delete this.customPresets[presetId];
+			this.saveCustomPresets();
+			return true;
+		}
+		return false;
 	}
 }

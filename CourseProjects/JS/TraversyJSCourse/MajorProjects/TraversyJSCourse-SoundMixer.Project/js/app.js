@@ -30,6 +30,10 @@ class AmbientMixer {
 
 			this.setupEventListeners();
 
+			// Load custom presets
+
+			this.loadCustomPresetsUI();
+
 			// Load all sounds
 
 			this.loadAllSounds();
@@ -59,10 +63,27 @@ class AmbientMixer {
 				await this.toggleSound(soundId);
 			}
 
+			// Check if delete button of custom preset was clicked
+
+			if (e.target.closest(".delete-preset")) {
+				e.stopPropagation();
+				const presetId = e.target.closest(".delete-preset").dataset.preset;
+				this.deleteCustomPreset(presetId);
+				return;
+			}
+
 			// Check if a default preset button was clicked
+
 			if (e.target.closest(".preset-btn")) {
 				const presetKey = e.target.closest(".preset-btn").dataset.preset;
 				this.loadPreset(presetKey);
+			}
+
+			// Check if a custom preset button was clicked
+
+			if (e.target.closest(".custom-preset-btn")) {
+				const presetKey = e.target.closest(".custom-preset-btn").dataset.preset;
+				this.loadPreset(presetKey, true);
 			}
 		});
 
@@ -198,6 +219,7 @@ class AmbientMixer {
 			// If sound is on, turn it off
 
 			this.soundManager.pauseSound(soundId);
+			this.currentSoundState[soundId] = 0;
 			this.ui.updateSoundPlayButton(soundId, false);
 		}
 
@@ -342,6 +364,10 @@ class AmbientMixer {
 
 		this.masterVolume = 100;
 
+		// Reset active preset
+
+		this.ui.setActivePreset(null);
+
 		// Reset current sound state
 
 		sounds.forEach((sound) => {
@@ -355,8 +381,14 @@ class AmbientMixer {
 
 	// Load preset config
 
-	loadPreset(presetKey) {
-		const preset = defaultPresets[presetKey];
+	loadPreset(presetKey, custom = false) {
+		let preset;
+
+		if (custom) {
+			preset = this.presetManager.loadPreset(presetKey);
+		} else {
+			preset = defaultPresets[presetKey];
+		}
 
 		if (!preset) {
 			console.error(`Preset: ${presetKey} not found`);
@@ -402,6 +434,12 @@ class AmbientMixer {
 
 		this.soundManager.isPlaying = true;
 		this.ui.updateMainPlayButton(true);
+
+		// Set active preset
+
+		if (presetKey) {
+			this.ui.setActivePreset(presetKey);
+		}
 	}
 
 	// Show save preset modal
@@ -435,8 +473,29 @@ class AmbientMixer {
 			return;
 		}
 
+		// Add custom preset button to UI
+
 		const presetId = this.presetManager.savePreset(name, this.currentSoundState);
+		this.ui.addCustomPreset(name, presetId);
+
 		this.ui.hideModal();
+	}
+
+	// Load custom preset button in UI
+
+	loadCustomPresetsUI() {
+		const customPresets = this.presetManager.customPresets;
+		for (const [presetId, preset] of Object.entries(customPresets)) {
+			this.ui.addCustomPreset(preset.name, presetId);
+		}
+	}
+
+	// Delete custom preset
+
+	deleteCustomPreset(presetId) {
+		if (this.presetManager.deletePreset(presetId)) {
+			this.ui.removeCustomPreset(presetId);
+		}
 	}
 }
 
